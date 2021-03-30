@@ -16,17 +16,38 @@ def getCharmanderLink(soup):
 # Task 2: Get the details from the box below "Egg moves". Get all the move names and store
 #         them into a list. The function should return that list of moves.
 def getEggMoves(pokemon):
+
     url = 'https://pokemondb.net/pokedex/'+pokemon
 
-    pass
+    anchor = soup.find("a", title="All Pokémon")["href"]
+    anchor_2 = anchor.find("a", title="View Poke dex for #212 Scizor")["href"]
+    anchor_3 = anchor_2.find("a")["href"]
+
+    table = anchor_3.soup.find("table", ["class", "resp-scroll"])
+    all_rows = table.find_all('tr')
+    moves_list = []
+
+    for row in all_rows:
+
+        row_cells = row.find_all('td')
+        value = row_cells[1].text.strip()
+        moves_list.append(value)
+
+    print(moves_list)
+    return moves_list
 
 # Task 3: Create a regex expression that will find all the times that have these formats: @2pm @5 pm @10am
 # Return a list of these times without the '@' symbol. E.g. ['2pm', '5 pm', '10am']
 def findLetters(sentences):
     # initialize an empty list
+
+    l = []
     
 
     # define the regular expression
+
+    reg_exp = r"[@\d]"
+
     
 
     # loop through each sentence or phrase in sentences
