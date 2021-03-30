@@ -18,6 +18,8 @@ def getCharmanderLink(soup):
 def getEggMoves(pokemon):
 
     url = 'https://pokemondb.net/pokedex/'+pokemon
+    r = requests.get(url)
+    soup = BeautifulSoup(r.text, "html.parser")
 
     anchor = soup.find("a", title="All Pokémon")["href"]
     anchor_2 = anchor.find("a", title="View Poke dex for #212 Scizor")["href"]
@@ -42,26 +44,21 @@ def findLetters(sentences):
     # initialize an empty list
 
     l = []
-    
 
     # define the regular expression
 
-    reg_exp = r"[@\d]"
-
-    
+    reg_exp = r"@([\d][0-2]? ?[ap]m)"
 
     # loop through each sentence or phrase in sentences
-    
+    for sentence in sentences:
+        # find all the words that match the regular expression in each sentence
+        words = re.findall(reg_exp, sentence)
+        # loop through the found words and add the words to your empty list
+        for word in words:
 
-    # find all the words that match the regular expression in each sentence
-       
-
-    # loop through the found words and add the words to your empty list
-
-
-    #return the list of the last letter of all words that begin or end with a capital letter
-
-    pass
+            l.append(word.rstrip())
+    # return the list of the last letter of all words that begin or end with a capital letter
+    return l
 
 def main():
     url = 'https://pokemondb.net/pokedex/national'
